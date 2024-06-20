@@ -1,31 +1,33 @@
+
+<!-- 没改完 -->
 <template>
-    <div class="page">
-      <div class="header">
-        <ul class="header-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Feedback</a></li>
-          <li><a href="#">Help Center</a></li>
+      <div class="nav">
+        <ul class="nav-links">
+          <li><router-link :to="{ name: 'home' }">Home</router-link></li>
+          <li><router-link :to="{ name: 'about' }">About us</router-link></li>
+          <li><router-link :to="{ name: 'contact' }">Contact us</router-link></li>
+          <li><router-link :to="{ name: 'feedback' }">Feedback</router-link></li>
+          <li><router-link :to="{ name: 'help' }">Help center</router-link></li>
           <div class="auth-links">            
-            <a href="#" @click="goToLogin">
+            <router-link :to="{ name: 'signup' }">
                 <img src="../assets/home/SignUp.png" alt="SignUp" class="SignUp" />
-                Sign Up
-            </a>            
-            <a href="#" @click="goToLogin">
+                Sign up
+              </router-link>            
+              <router-link :to="{ name: 'signin' }">
                 <img src="../assets/home/SignIn.png" alt="SignIn" class="SignIn" />
-                Sign In
-            </a>
+                Sign in
+              </router-link>
           </div>
         </ul>
       </div>
+   
       <div class="home">
         <header class="navbar">
           <div class="navbar-container">
             <img src="../assets/home/icon1.png" alt="icon1" class="icon1" />
             <img src="../assets/home/Z4.png" alt="Z4" class="Z4" />
             <div class="search-bar">
-              <input type="text" placeholder="Search food name" v-model="query" />
+              <input type="text" placeholder="Search food name" />
               <img src="../assets/home/search.png" alt="Search" class="search-icon" @click="search" />
             </div>
             
@@ -44,9 +46,10 @@
                 User Community
             </a>
           </div>
-          </div>          
-        </header>
+          </div>     
+        </header>     
       </div>
+   
       <div class="green1">
         <img src="../assets/home/gs1.jpg " alt="green" class="green" />
         <a href="#" class="learn-more-btn" @click="learnMore">LEARN MORE</a>
@@ -61,69 +64,63 @@
           </div>          
         </header>
       </div>
-    </div>
+      
   </template>
-  
+
   <script>
 export default {
-  name: "Home",
   data() {
     return {
-      query: "",
+     
     };
   },
   methods: {
     search() {
-      console.log("Performing search:", this.query);
-      // 在这里添加搜索逻辑，比如跳转到搜索结果页面
-      // 例如：this.$router.push(`/search?q=${this.query}`);
-    },
-    goToLogin() {
-      // 这里可以使用 Vue Router 或直接跳转到登录页面的逻辑
-      console.log("跳转到登录页面");
-      // window.location.href = '/login'; // 例如这样跳转
-    },
-    learnMore() {
-      console.log("跳转到了解更多页面");
-      // 在这里添加跳转到了解更多页面的逻辑
-      // 例如：this.$router.push('/learn-more');
-    },
-  },
+    
+    }
+    // goToAbout() {
+    //   this.$router.push('/about');
+    // },
+    // goToLogin() {
+    //   this.$router.push({ name: 'signin' });
+    // }
+    
+  }
 };
 </script>
   
-  <style scoped>
-  /* 全局样式 */
-  .page {
-    font-family: Arial, sans-serif;
-  }
-  
-  /* 导航栏样式 */
-  .header {
+<style scoped>
+  body{
+    /* 这里的字体没用上啊 */
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+}
+  .nav {
     background-color: #ecc642;
     margin: 0;
     padding: 0;
+    width:100%;
   }
   
-  .header-links {
+  .nav-links {
     display: flex;
     justify-content: flex-start;
     list-style: none;
     margin: 0;
-    padding: 0.7rem 2rem;
+    padding: 0.7em 2em;
   }
   
-  .header-links li {
+  .nav-links li {
     margin-left: 2rem;
   }
   /*登录注册*/
-  .header-links a {  
+  .nav-links a {  
     text-decoration: none;
     color: #333333;
-    font-size: 1rem;
+    font-size: 1rem; 
   }
   
-  .header-links a:hover {
+  .nav-links a:hover {
     text-decoration: underline;
    color: #4CAF50;
 }
@@ -133,6 +130,7 @@ export default {
     display: flex;
     align-items: center;
     margin-left: auto; /* 将认证链接推到最右侧 */
+    
   }
   
   .SignUp,
@@ -151,16 +149,17 @@ export default {
   }
   
   /* 导航栏样式 */
-  .navbar {
+  /* .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #f7f5f5;
     padding: 0.1rem 2rem;
-  }
+  } */
   
   .navbar-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
   }
@@ -258,7 +257,7 @@ export default {
 .green1 .green {
   display: block; /* 确保图片作为块级元素 */
   width: 90%; /* 图片宽度占满父元素 */
-  height: 35rem; /* 图片高度自适应 */
+  height: 25rem; /* 图片高度自适应 */
 }
 .learn-more-btn {
   position: absolute; /* 绝对定位 */
@@ -298,8 +297,8 @@ export default {
   margin-left:2rem;
 }
 .recommended-text {
-  font-weight: bold; /* 加粗 */
-  font-size: 1rem; /* 增大字体 */
+  font-weight: bold; 
+  font-size: 1rem; 
 }
-  </style>
+</style>
   

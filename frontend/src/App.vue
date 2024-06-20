@@ -1,5 +1,6 @@
 <template>
   <Home/>
+
 </template>
 
 <script>
@@ -16,7 +17,8 @@ export default {
 
 
 <style scoped>
-header {
+
+/* header {
   line-height: 1.5;
 }
 
@@ -31,5 +33,5 @@ header {
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
-}
+} */
 </style>
