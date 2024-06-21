@@ -6,6 +6,9 @@ import Feedback from '../components/Feedback.vue';
 import Help from '../components/Help.vue';
 import Signup from '../components/Signup.vue';
 import Signin from '../components/Signin.vue';
+import Collect from '../components/Collect.vue';
+import History from '../components/History.vue';
+import Community from '../components/Community.vue';
 // 定义路由配置数组
 const routes = [//vue3路由器链接更改路径，但路由器视图不更改 咋回事 搜索
     {
@@ -42,6 +45,21 @@ const routes = [//vue3路由器链接更改路径，但路由器视图不更改 
         path: '/signin',
         name: 'signin',
         component: Signin
+    },
+    {
+        path: '/collect',
+        name: 'collect',
+        component: Collect
+    },
+    {
+        path: '/history',
+        name: 'history',
+        component: History
+    },
+    {
+        path: '/community',
+        name: 'community',
+        component: Community
     }
 ];
 
