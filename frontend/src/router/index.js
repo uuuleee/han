@@ -4,7 +4,6 @@ import About from '../components/About.vue';
 import Contact from '../components/Contact.vue';
 import Feedback from '../components/Feedback.vue';
 import Help from '../components/Help.vue';
-import Signup from '../components/Signup.vue';
 import Signin from '../components/Signin.vue';
 import Collect from '../components/Collect.vue';
 import History from '../components/History.vue';
@@ -35,11 +34,6 @@ const routes = [//vue3路由器链接更改路径，但路由器视图不更改 
         path: '/help',
         name: 'help',
         component: Help
-    },
-    {
-        path: '/signup',
-        name: 'signup',
-        component: Signup
     },
     {
         path: '/signin',

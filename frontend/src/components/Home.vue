@@ -8,7 +8,7 @@
       <li><router-link :to="{ name: 'feedback' }" class="nav-link">Feedback</router-link></li>
       <li><router-link :to="{ name: 'help' }" class="nav-link">Help center</router-link></li>
       <div class="auth-links">
-      <li><router-link :to="{ name: 'signup' }" class="nav-link">
+      <li><router-link :to="{ name: 'signin' }" class="nav-link">
           <img src="../assets/home/SignUp.png" alt="SignUp" class="SignUp" />
           Sign up
         </router-link></li>
