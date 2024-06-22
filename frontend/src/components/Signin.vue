@@ -5,44 +5,42 @@
        <div class="title">欢迎回来</div>
        <div class="subtitle">登录你的账户</div>
        <div class="inputf">
-         <input type="text" placeholder="用户名"/>
+            <!-- 应该是从这获得参数？ -->
+         <input type="text" v-model="loginData.username" placeholder="用户名"/>  
          <span class="lable">用户名</span>
        </div>
        <div class="inputf">
-         <input type="text" placeholder="密码"/>
+         <input type="text"  v-model="loginData.password" placeholder="密码"/>
           <span class="lable">密码</span>
        </div>
-       <button>登录</button>
+       <button @click="login">登录</button>
      </div>
      <div :class="active === 2 ? 'form' : 'form hidden'">
           <div class="title">开始</div>
           <div class="subtitle">创建你的账户</div>
+          <!-- 应该是从这获得参数？ -->
           <div class="inputf">
-             <input type="text" placeholder="用户名"/>
+            <input v-model="registerData.username" type="text" placeholder="用户名"/>
              <span class="lable">用户名</span>
           </div>
           <div class="inputf">
-             <input type="text" placeholder="邮箱"/>
+            <input v-model="registerData.email" type="text" placeholder="邮箱"/>
              <span class="lable">邮箱</span>
           </div>
           <div class="inputf">
-             <input type="text" placeholder="联系方式"/>
-             <span class="lable">联系方式</span>
-          </div>
-          <div class="inputf">
-             <input type="text" placeholder="密码"/>
+            <input v-model="registerData.password" type="password" placeholder="密码"/>
              <span class="lable">密码</span>
           </div>
-          <button>注册</button>
+          <button @click="register">注册</button>
         </div>
         <div :class="active === 1 ? 'card': 'card active'">
           <div class="head">
             <div class="name">Nutri<span>Check</span></div>
           </div>
-          <div class="desc">啦啦啦啦nih niihgfutf啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦</div>
+          <div class="desc">啦啦啦啦nih niihgfutf啦啦啦</div>
           <div class="btn">
             {{ active === 1 ?'新用户?' :'已有账号'}}
-            <button @click="active = (active === 1) ? 2 : 1">
+            <button @click="toggleForm">
                 {{ active === 1 ?'去注册?' :'去登录'}}
             </button>
           </div>
@@ -52,8 +50,38 @@
  </template>
 
 <script setup>
-import {ref} from "vue";
-const active = ref(1)
+import { ref } from 'vue';
+import axios from 'axios';
+
+const active = ref(1);
+const loginData = ref({ username: '', password: '' });
+const registerData = ref({ username: '', email: '', password: '' });
+
+const toggleForm = () => {
+  active.value = active.value === 1 ? 2 : 1;
+};
+
+const login = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/auth/login', loginData.value);
+    console.log(response.data);
+    alert('登录成功');
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('登录失败');
+  }
+};
+
+const register = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/auth/register', registerData.value);
+    console.log(response.data);
+    alert('注册成功');
+  } catch (error) {
+    console.error('Register error:', error);
+    alert('注册失败');
+  }
+};
 </script>
   
  <style lang="scss">

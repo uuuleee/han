@@ -1,11 +1,10 @@
-
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');//这是引入user还是auth
+const User = require('../models/user'); // 确保路径正确
 
 // 注册新用户
 exports.register = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
     try {
         // 检查用户名是否已存在
@@ -15,7 +14,7 @@ exports.register = async (req, res) => {
         }
 
         // 创建新用户
-        user = new User({ username, password });
+        user = new User({ username, email, password });
 
         // 保存用户到数据库
         await user.save();
@@ -25,6 +24,7 @@ exports.register = async (req, res) => {
         console.error(err.message);
         res.status(500).send('服务器错误');
     }
+
 };
 
 // 用户登录

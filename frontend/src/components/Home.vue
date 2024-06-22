@@ -8,10 +8,10 @@
       <li><router-link :to="{ name: 'feedback' }" class="nav-link">Feedback</router-link></li>
       <li><router-link :to="{ name: 'help' }" class="nav-link">Help center</router-link></li>
       <div class="auth-links">
-      <li><router-link :to="{ name: 'signin' }" class="nav-link">
+      <!-- <li><router-link :to="{ name: 'signin' }" class="nav-link">
           <img src="../assets/home/SignUp.png" alt="SignUp" class="SignUp" />
           Sign up
-        </router-link></li>
+        </router-link></li> -->
         <li> <router-link :to="{ name: 'signin' }" class="nav-link">
           <img src="../assets/home/SignIn.png" alt="SignIn" class="SignIn" />
           Sign in
@@ -41,11 +41,11 @@
         <img src="../assets/home/community1.png" alt="community1" class="community1" />
         User Community
         </router-link>
-
-    
         </div>
       </div>
     </header>
+        <!-- Add this router-view to render children components -->
+        <router-view></router-view>
   </div>
 </template>
 

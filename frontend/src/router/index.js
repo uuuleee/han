@@ -9,11 +9,11 @@ import Collect from '../components/Collect.vue';
 import History from '../components/History.vue';
 import Community from '../components/Community.vue';
 // 定义路由配置数组
-const routes = [//vue3路由器链接更改路径，但路由器视图不更改 咋回事 搜索
+const routes = [
     {
-        path: '/',          // 路径为根路径 '/'
-        name: 'home',       // 路由的名称，可以在程序中引用
-        component: Home     // 对应的组件为 Home.vue
+        path: '/',
+        name: 'home',
+        component: Home
     },
     {
         path: '/about',
