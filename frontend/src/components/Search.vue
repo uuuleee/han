@@ -47,9 +47,9 @@ export default {
         const response = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}`);
         this.product = response.data;
 
-        // 获取产品照片
-        const imageResponse = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}/image`);
-        this.imageUrl = imageResponse.data.imageUrl;
+        // // 获取产品照片
+        // const imageResponse = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}/image`);
+        // this.imageUrl = imageResponse.data.imageUrl;
       } catch (error) {
         console.error('Error:', error.response);
         this.error = 'Failed to fetch product information: ' + (error.response ? error.response.data.error : error.message);

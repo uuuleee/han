@@ -14,14 +14,14 @@ exports.getProductInfo = async (req, res) => {
 };
 
 
-exports.getProductImage = async (req, res) => {
-    const { barcode } = req.params;
-    const imageUrl = `https://images.openfoodfacts.org/images/products/${barcode}.jpg`;
+// exports.getProductImage = async (req, res) => {
+//     const { barcode } = req.params;
+//     const imageUrl = `https://images.openfoodfacts.org/images/products/${barcode}.jpg`;
 
-    try {
-        await axios.head(imageUrl); // 检查图片是否存在
-        res.json({ imageUrl });
-    } catch (error) {
-        res.status(404).json({ error: 'Image not found', details: error.message });
-    }
-};
+//     try {
+//         await axios.head(imageUrl); // 检查图片是否存在
+//         res.json({ imageUrl });
+//     } catch (error) {
+//         res.status(404).json({ error: 'Image not found', details: error.message });
+//     }
+// };

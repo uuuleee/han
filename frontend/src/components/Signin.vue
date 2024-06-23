@@ -1,6 +1,7 @@
 <template>
   <div class="singin-container">
     <div class="slider">
+      <!-- log in -->
       <div :class="active === 1 ? 'form' : 'form hidden'">
         <div class="title">NutriCheck</div>
         <div class="subtitle">Welcome to Login</div>
@@ -10,7 +11,6 @@
             @input="validateUsername1"  @blur="validateUsername1"          />
           <span class="lable">Username</span>
           <span v-if="usernameError1" class="error-message">{{ usernameError1 }}</span>
->>>>>>> 986880341d6380152f626092a2647ebfad4a2912
         </div>
         <div class="inputf">
           <input
@@ -21,6 +21,7 @@
         </div>
         <button @click="login">Sign in</button>
       </div>
+      <!-- sign up -->
       <div :class="active === 2 ? 'form' : 'form hidden'">
         <div class="title">NutriCheck</div>
         <div class="subtitle">Welcome to register</div>
@@ -137,7 +138,7 @@ const checkPasswordEmpty2 = () => {
     passwordError2.value = 'Password cannot be empty';
   } else {
     passwordError2.value = '';
->>>>>>> 986880341d6380152f626092a2647ebfad4a2912
+
   }
 };
 
