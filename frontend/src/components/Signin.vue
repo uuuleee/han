@@ -67,7 +67,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';// 从 vue-router 中导入 useRouter 函数
-
+const router = useRouter();
 const active = ref(1);
 const loginData = ref({ username: '', password: '' });
 const registerData = ref({ username: '', email: '', password: '' });
@@ -107,6 +107,8 @@ const login = async () => {
       const response = await axios.post('http://localhost:3000/api/auth/login', loginData.value);
       console.log(response.data);
       alert('登录成功');
+         // 跳转到主页
+         router.push({ path: '/' });
     } catch (error) {
       console.error('Login error:', error);
       alert('登录失败');
@@ -141,7 +143,7 @@ const checkPasswordEmpty2 = () => {
 
   }
 };
-
+// 注册
 const register = async () => {
   validateUsername2();
   checkPasswordEmpty2();
