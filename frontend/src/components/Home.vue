@@ -7,11 +7,8 @@
       <li><router-link :to="{ name: 'contact' }" class="nav-link">Contact us</router-link></li>
       <li><router-link :to="{ name: 'feedback' }" class="nav-link">Feedback</router-link></li>
       <li><router-link :to="{ name: 'help' }" class="nav-link">Help center</router-link></li>
+      <!-- 登录和注册 -->
       <div class="auth-links">
-      <!-- <li><router-link :to="{ name: 'signin' }" class="nav-link">
-          <img src="../assets/home/SignUp.png" alt="SignUp" class="SignUp" />
-          Sign up
-        </router-link></li> -->
         <li> <router-link :to="{ name: 'signin' }" class="nav-link">
           <img src="../assets/home/SignIn.png" alt="SignIn" class="SignIn" />
           Sign in
@@ -24,19 +21,26 @@
       <div class="navbar-container">
         <img src="../assets/home/icon1.png" alt="icon1" class="icon1" />
         <img src="../assets/home/Z4.png" alt="Z4" class="Z4" />
+        <!-- 搜索框 -->
         <div class="search-bar">
-          <input type="text" placeholder="Search food name" />
-          <img src="../assets/home/search.png" alt="Search" class="search-icon" @click="search" />
+          <input type="text" v-model="searchQuery" placeholder="Search food name or barcode" 
+          @keyup.enter="handleSearch" />
+          <img src="../assets/home/search.png" alt="Search" class="search-icon" @click="handleSearch"/>
         </div>
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+        
+        <!-- 收藏 -->
         <div class="right-section">
           <router-link :to="{ name: 'collect' }" class="nav-link">
             <img src="../assets/home/collect1.png" alt="collect1" class="collect1" />
             Collect
           </router-link>
+              <!-- 历史记录 -->
       <router-link :to="{ name: 'history' }" class="nav-link">
         <img src="../assets/home/browse1.png" alt="browse1" class="browse1" />
         Browse History
       </router-link>
+      <!-- 社区 -->
       <router-link :to="{ name: 'community' }" class="nav-link">
         <img src="../assets/home/community1.png" alt="community1" class="community1" />
         User Community
@@ -53,12 +57,25 @@
 export default {
   data() {
     return {
-      showMenu: false
+      showMenu: false,
+      searchQuery: '',
+      errorMessage: ''
     };
   },
   methods: {
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    }
+  },
+  methods: {
+    handleSearch() {
+      if (this.searchQuery.trim() === '') {
+        this.errorMessage = '';
+      } else {
+        this.errorMessage = '';
+        // 导航到名为 'search' 的路由，并传递查询参数 q
+        this.$router.push({ name: 'search', query: { q: this.searchQuery } });
+      }
     }
   }
 }
@@ -185,7 +202,7 @@ export default {
 .search-bar input {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 30px;
+  border-radius: 5px;
   width: 100%; /* 调整输入框宽度 */
 }
 
@@ -204,7 +221,8 @@ export default {
 }
 
 .search-bar .search-icon:hover {
-  opacity: 0.7; /* 悬停时降低不透明度 */
+  /* opacity: 0.7; 悬停时降低不透明度 */
+  filter: brightness(0.4); 
 }
 
 .right-section {

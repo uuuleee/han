@@ -1,11 +1,11 @@
 <template>
     <div class="singin-container">      
+      <!-- 登录 -->
      <div class="slider">
         <div :class="active === 1 ? 'form' : 'form hidden'">
        <div class="title">欢迎回来</div>
        <div class="subtitle">登录你的账户</div>
-       <div class="inputf">
-            <!-- 应该是从这获得参数？ -->
+       <div class="inputf">       
          <input type="text" v-model="loginData.username" placeholder="用户名"/>  
          <span class="lable">用户名</span>
        </div>
@@ -15,10 +15,10 @@
        </div>
        <button @click="login">登录</button>
      </div>
+     <!-- 注册 -->
      <div :class="active === 2 ? 'form' : 'form hidden'">
           <div class="title">开始</div>
           <div class="subtitle">创建你的账户</div>
-          <!-- 应该是从这获得参数？ -->
           <div class="inputf">
             <input v-model="registerData.username" type="text" placeholder="用户名"/>
              <span class="lable">用户名</span>
@@ -52,11 +52,12 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';// 从 vue-router 中导入 useRouter 函数
 
 const active = ref(1);
 const loginData = ref({ username: '', password: '' });
 const registerData = ref({ username: '', email: '', password: '' });
-
+const router = useRouter();
 const toggleForm = () => {
   active.value = active.value === 1 ? 2 : 1;
 };
@@ -64,8 +65,12 @@ const toggleForm = () => {
 const login = async () => {
   try {
     const response = await axios.post('http://localhost:3000/api/auth/login', loginData.value);
-    console.log(response.data);
+    console.log("Log in ",response.data);
+    
+    
     alert('登录成功');
+      // 跳转到主页
+      router.push({ path: '/' });
   } catch (error) {
     console.error('Login error:', error);
     alert('登录失败');
@@ -75,8 +80,11 @@ const login = async () => {
 const register = async () => {
   try {
     const response = await axios.post('http://localhost:3000/api/auth/register', registerData.value);
-    console.log(response.data);
+    console.log("Sign up ",response.data);
+    
     alert('注册成功');
+      // 跳转到主页
+      router.push({ path: '/' });
   } catch (error) {
     console.error('Register error:', error);
     alert('注册失败');

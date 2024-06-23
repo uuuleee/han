@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoute');
+const searchRoutes = require('./routes/searchRoute');
 const connectDB = require('./config'); // 确保你的数据库连接函数正确
 
 const app = express();
@@ -15,6 +16,7 @@ connectDB();
 
 // 使用路由
 app.use('/api/auth', authRoutes);
+app.use('/api', searchRoutes);
 
 // 监听指定的端口
 app.listen(port, () => {

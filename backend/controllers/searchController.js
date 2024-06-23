@@ -1,13 +1,27 @@
-// const OpenFoodFacts = require('openfoodfacts-nodejs');
-// const client = new OpenFoodFacts();
-// 设置自定义 User Agents
-// client.setCustomUserAgent("MyApp");
-// // 定义 API 路由
-// app.get('/api/v2/product/:barcode', async (req, res) => {
-//     try {
-//         const product = await client.getProduct(req.params.barcode);
-//         res.json(product);
-//     } catch (error) {
-//         res.status(500).json({ error: 'Error fetching product data' });
-//     }
-// });
+
+
+const axios = require('axios');
+
+exports.getProductInfo = async (req, res) => {
+    const { barcode } = req.params;
+    console.log("did recieve params", barcode);
+    try {
+        const response = await axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch product information', details: error.message });
+    }
+};
+
+
+exports.getProductImage = async (req, res) => {
+    const { barcode } = req.params;
+    const imageUrl = `https://images.openfoodfacts.org/images/products/${barcode}.jpg`;
+
+    try {
+        await axios.head(imageUrl); // 检查图片是否存在
+        res.json({ imageUrl });
+    } catch (error) {
+        res.status(404).json({ error: 'Image not found', details: error.message });
+    }
+};

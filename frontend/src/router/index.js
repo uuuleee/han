@@ -5,6 +5,7 @@ import Contact from '../components/Contact.vue';
 import Feedback from '../components/Feedback.vue';
 import Help from '../components/Help.vue';
 import Signin from '../components/Signin.vue';
+import Search from '../components/Search.vue';
 import Collect from '../components/Collect.vue';
 import History from '../components/History.vue';
 import Community from '../components/Community.vue';
@@ -41,6 +42,12 @@ const routes = [
         component: Signin
     },
     {
+        path: '/search',
+        name: 'search',
+        component: Search,
+        props: true
+    },
+    {
         path: '/collect',
         name: 'collect',
         component: Collect
@@ -54,7 +61,8 @@ const routes = [
         path: '/community',
         name: 'community',
         component: Community
-    }
+    },
+
 ];
 
 // 创建路由器实例
