@@ -1,8 +1,10 @@
 <template>
   <div class="search-results">
-     <!-- 显示Home.vue中的内容 -->
-     <Home />
+     <!-- 显示Nav.vue中的内容 -->
+     <Nav />
       <router-view></router-view>
+  </div>
+  <div>
     <div v-if="loading">
       <!-- 此处可以用加载图片代替 居中  <img src="loading.gif" alt="Loading...">-->
       <p>Loading...</p>
@@ -10,44 +12,94 @@
     <div v-if="error" class="error-message">
       <p>Error: {{ error }}</p>
     </div>
-    <div v-if="products">
-     
-        <!-- 食物产品详细信息 -->
-        <div v-for="product in products" :key="product.code" class="product">
-        <!-- Food product image -->
-        <div class="product-image-container">
-          <img :src="product.image_front_url" :alt="product.product_name" class="product-image"/>
-        </div>
+
+    <div v-if="responseData" class="product">
+      <!-- Food product image -->
+      <div class="product-image-container">
+          <img :src="responseData.image_front_url" :alt="responseData.product_name" class="product-image"/>
+      </div>
+      
         <!-- Food product info -->
         <div class="product-info">
-        <!-- 出现的问题 就是v-for 它里面不能有除了{{ }}以外的东西，比如这种 <div>name:{{ product.product_name }}</div> 
-        这会导致name：被渲染四次.好像也不是这个问题 我也不知道。我这么写：<div>{{ product.nova_group }}</div> 就只渲染一次，但是我得写name：就是名称啥的 -->
-        <!-- 问题通常出现在每次v-for循环中，模板内部的计算会被重新执行，导致重复渲染。 -->
-             <div>code: {{ product.code }}</div>
-             <div>nova: {{ product.nova_group }}</div>
-             <div>quantity: {{ product.product_quantity }}</div>
-             <div>additives: {{ product.additives }}</div>
+          <p>Barcode: {{ responseData.code }}</p>
+          <!-- 
+             <p>Nova: {{ product.nova_group }}</p>
+             <p>Quantity: {{ product.product_quantity }}</p>
+             <p>Additives: {{ product.additives_tags }}</p>
+             <p>Eco grade: {{ product.ecoscore_grade }}</p>
+             <p>Food groups: {{ product.food_groups }}</p>
+             <p>code: {{ product.nutriments }}</p>
+             <p>image_nutrition_url: {{ product.nutrient_levels }}</p>
+             <p>nutriscore_grade: {{ product.nutriscore_grade}}</p>
+             <p>  nutriscore_score {{ product.  nutriscore_score}}</p>
+             <p>origin: {{ product.origin}}</p>
+             <p>nova_groups_markers: {{ product.nova_groups_markers}}</p>
+             <p>traces_from_ingredients: {{ product.traces_from_ingredients}}</p>    
+         -->       
+     </div>  
+
+</div>
+<div v-if="responsePanel" class="knowledge-panels">
+  <!-- 添加剂 -->
+    <div v-if="responsePanel.additives">
+         <div>Additives</div>
+         <!-- 遍历 additives 中的 elements 数组 -->
+        <div v-for="(element, index) in responsePanel.additives.elements" :key="index">
+            <h2>{{ responsePanel[element.panel_element.panel_id].title_element.title }}</h2>
+            <div v-html="responsePanel[element.panel_element.panel_id].elements[0].text_element.html"></div>
         </div>
-      </div>
-  </div>
+    </div>
 </div>
 
+
+  <!-- <div v-if="responsePanel" class="knowledge-panels">
+      <div v-for="(panel) in responsePanel" :key="panel"   
+      class="panel">
+        <h2>{{ panel.title_element?.title }}</h2>
+        <div v-for="(element, index) in panel.elements" :key="index">
+          <div v-if="element.element_type === 'text'" v-html="element.text_element.html"></div>
+          <div v-else-if="element.element_type === 'image'">
+          <img :src="element.image_element.url" :alt="element.image_element.alt || 'Image'" />
+        </div>
+        <div v-else-if="element.element_type === 'table'">
+          <table>
+            <thead>
+              <tr>
+                <th v-for="column in element.table_element.columns" :key="column.text">{{ column.text }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in element.table_element.rows" :key="row.id">
+                <td v-for="value in row.values" :key="value.text">
+                  <img v-if="value.icon_url" :src="value.icon_url" :alt="value.text" />
+                  <span v-else>{{ value.text }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div> -->
+ 
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Home from './Home.vue';//将Home.vue引入
+import Nav from './Nav.vue';
+
 
 export default {
   components: {
-    Home
+    Nav
   },
 
   data() {
     return {
       searchQuery: '',
-      products: [],
-      imageUrl: null,
+      responseData: {} ,
+      responsePanel:{},
       loading: false,
       error: null,
     };
@@ -56,57 +108,76 @@ export default {
     this.searchQuery = this.$route.query.q || '';
     if (this.searchQuery) {
       this.search();
+     
     }
   },
-  methods: {
-    async search() {
-      this.loading = true;
-      this.error = null;
+  methods: { 
+  async search() {
+  this.loading = true;
+  this.error = null;
+  try {
+    // 获取产品信息
+    const response = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}`);
+
+    this.responseData = response.data.product;
+    console.log(this.responseData);
+
+      //获取knowledge panels信息
+      const panelResponse = await axios.get(`https://world.openfoodfacts.net/api/v2/product/${this.searchQuery}?fields=knowledge_panels`);
+      this.responsePanel = panelResponse.data.product.knowledge_panels;
+      console.log(this.responsePanel);
+    // const panelResponse = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}?fields=knowledge_panels`);
+    // this.responsePanel = panelResponse.data;
+   
+
+    
+  } catch (error) {
+    console.error('Error:', error.response);
+    this.error = 'Failed to fetch product information: ' + (error.response ? error.response.data.error : error.message);
+  } finally {
+    this.loading = false;
+  }
+},
+
   
-      try {
-        const response = await axios.get(`http://localhost:3000/api/product/${this.searchQuery}`);
-        this.products = response.data;
-        
-      } catch (error) {
-        console.error('Error:', error.response);
-        this.error = 'Failed to fetch product information: ' + (error.response ? error.response.data.error : error.message);
-      } finally {
-        this.loading = false;
-      }
-    }
+
+
+   
   }
 };
 </script>
 
 <style scoped>
-.product {
+
+  
+
+.product{
   display: flex;
-  align-items: center;
-  margin-bottom: 4px;
+  border: 3px solid red;
+  
 }
 
 .product-image-container {
-  flex: 1;
-  max-width: 33.33%;
-  padding-right: 10px;
-  padding-top: 4px;
-  padding-left:70px;
-}
-
-.product-image {
-  width: 100%;
-  height: auto;
+  flex: 1; /* 占据父容器的1/3宽度 */
 }
 
 .product-info {
-  flex: 2;
-  max-width: 66.67%;
+  flex: 2; /* 占据父容器的2/3宽度 */
+  padding-left: 20px; /* 可选：为了增加图片和文字之间的间距 */
+}
+
+.product-image {
+  width: 100%; /* 图片宽度填充其容器 */
+  height: auto; /* 根据比例调整高度 */
 }
 
 .error-message {
   color: red;
 }
-
+.knowledge-panels{
+  border: 3px solid red;
+  padding:30px;
+}
 @media (max-width: 768px) {
   .product {
     flex-direction: column;

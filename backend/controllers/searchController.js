@@ -1,10 +1,8 @@
-
-
 const axios = require('axios');
 
+// 获取特定产品的基本信息
 exports.getProductInfo = async (req, res) => {
     const { barcode } = req.params;
-    console.log("did recieve params", barcode);
     try {
         const response = await axios.get(`https://world.openfoodfacts.org/api/v2/product/${barcode}`);
         res.json(response.data);
@@ -13,15 +11,16 @@ exports.getProductInfo = async (req, res) => {
     }
 };
 
-
-// exports.getProductImage = async (req, res) => {
+// 获取特定产品的知识面板数据
+// exports.getKnowledgePanel = async (req, res) => {
 //     const { barcode } = req.params;
-//     const imageUrl = `https://images.openfoodfacts.org/images/products/${barcode}.jpg`;
-
 //     try {
-//         await axios.head(imageUrl); // 检查图片是否存在
-//         res.json({ imageUrl });
+//         const response = await axios.get(`https://world.openfoodfacts.net/api/v2/product/${barcode}?fields=knowledge_panels`);
+//         const productData = response.data.product.knowledge_panels;
+//         res.json(productData);
+
 //     } catch (error) {
-//         res.status(404).json({ error: 'Image not found', details: error.message });
+//         console.error('Error fetching knowledge panels:', error);
+//         res.status(500).json({ error: 'Failed to fetch knowledge panels' });
 //     }
 // };

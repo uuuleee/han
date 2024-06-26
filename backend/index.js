@@ -16,7 +16,8 @@ connectDB();
 
 // 使用路由
 app.use('/api/auth', authRoutes);
-app.use('/api', searchRoutes);
+// app.use('/api', searchRoutes);
+
 
 // 监听指定的端口
 app.listen(port, () => {

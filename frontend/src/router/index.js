@@ -9,6 +9,8 @@ import Search from '../components/Search.vue';
 import Collect from '../components/Collect.vue';
 import History from '../components/History.vue';
 import Community from '../components/Community.vue';
+import Recommend from '../components/Recommend.vue';
+import Nav from '../components/Nav.vue';
 // 定义路由配置数组
 const routes = [
     {
@@ -62,6 +64,16 @@ const routes = [
         name: 'community',
         component: Community
     },
+    {
+        path: '/recommend',
+        name: 'recommend',
+        component: Recommend
+    },
+    {
+        path: '/nav',
+        name: 'nav',
+        component: Nav
+    }
 
 ];
 

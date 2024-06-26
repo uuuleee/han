@@ -1,8 +1,11 @@
-// searchRouter.js
 const express = require('express');
-const { getProductInfo } = require('../controllers/searchController');
 const router = express.Router();
 
-router.get('/product/:barcode', getProductInfo);
-// router.get('/product/:barcode/image', getProductImage);
+const searchController = require('../controllers/searchController');
+// GET请求处理特定产品的基本信息
+router.get('/product/:barcode', searchController.getProductInfo);
+
+// GET请求处理特定产品的知识面板数据
+// router.get('/product/:barcode?fields=knowledge_panels', searchController.getKnowledgePanel);
+
 module.exports = router;
