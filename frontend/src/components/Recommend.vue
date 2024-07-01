@@ -25,21 +25,37 @@
   
       <!-- div3: 存放商品模块 -->
       <div class="div3">
-        <div class="container-products">
-          <div class="product-row" v-for="row in 3" :key="row">
-            <div class="product-col" v-for="col in 4" :key="(row - 1) * 4 + col">
-              <!-- 商品信息，这里只是示例 -->
-              Product {{ (row - 1) * 5 + col + 1 }}
+  <div class="container-products">
+    <!-- 使用模板进行循环，每4个商品作为一行 -->
+    <template v-for="row in Math.ceil(products.length / 4)" :key="row">
+      <div class="product-row">
+        <!-- 每行显示四个商品 -->
+        <template v-for="(product, index) in products.slice((row - 1) * 4, row * 4)" :key="product.code">
+          <div class="product-col">
+            <div class="product-info">
+              
+              <img :src="product.image_front_url" class="product-image" />
+              <div class="product-details">
+                <p>{{ product.product_name }}</p>
+                <p>Nova: {{ product.nova_group }}</p>
+                <p>Nutrients: {{ product.nutrient_levels }}</p>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </div>
-    </div>
+    </template>
+  </div>
+</div>
+</div>
+
 </template>
 <script>
+import axios from 'axios';
 export default {
     data() {
       return {
+        products: [],
         show_index: 0,
         dir: 'next',
         img_arr: [
@@ -51,7 +67,7 @@ export default {
         timer_delay: null
       };
     },
-  
+   
     methods: {
       next_img() {
         this.dir = 'next';
@@ -88,12 +104,25 @@ export default {
         this.timer_delay = setTimeout(() => {
           this.timer = this.timer_start();
         }, 5000);
-      }
+      },
+      async fetchProducts() {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/products`);
+    this.products = response.data;
+
+    console.log("Products:", this.products); // 确保能正确输出产品数据
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    this.error = 'Error fetching products';
+  }
+}
+
     },
   
     mounted() {
       // 初始化定时器
       this.timer = this.timer_start();
+      this.fetchProducts();
     }
   };
 </script>

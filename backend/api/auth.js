@@ -1,22 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // 确保路径正确
+const User = require('../models/user');
 
 // 注册新用户
-exports.register = async (req, res) => {
+router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        // 检查用户名是否已存在
+        // Check if username already exists
         let user = await User.findOne({ username });
         if (user) {
             return res.status(400).json({ msg: '用户名已存在' });
         }
 
-        // 创建新用户
+        // Create new user
         user = new User({ username, email, password });
 
-        // 保存用户到数据库
+        // Save user to database
         await user.save();
 
         res.json({ msg: '注册成功' });
@@ -24,27 +24,26 @@ exports.register = async (req, res) => {
         console.error(err.message);
         res.status(500).send('服务器错误');
     }
-
-};
+});
 
 // 用户登录
-exports.login = async (req, res) => {
+router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // 检查用户是否存在
+        // Check if user exists
         let user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ msg: '用户不存在' });
         }
 
-        // 验证密码
+        // Validate password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ msg: '密码错误' });
         }
 
-        // 生成 JWT
+        // Generate JWT
         const payload = {
             user: {
                 id: user.id,
@@ -53,8 +52,8 @@ exports.login = async (req, res) => {
 
         jwt.sign(
             payload,
-            'your_jwt_secret', // 替换为你的实际 JWT 密钥
-            { expiresIn: 3600 }, // Token 有效期1小时
+            'your_jwt_secret', // Replace with your actual JWT secret
+            { expiresIn: 3600 }, // Token expires in 1 hour
             (err, token) => {
                 if (err) throw err;
                 res.json({ token });
@@ -64,4 +63,6 @@ exports.login = async (req, res) => {
         console.error(err.message);
         res.status(500).send('服务器错误');
     }
-};
+});
+
+module.exports = router;

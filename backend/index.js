@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoute');
-const searchRoutes = require('./routes/searchRoute');
+const auth = require('./api/auth');
+const product = require('./api/product');
 const connectDB = require('./config'); // 确保你的数据库连接函数正确
 
 const app = express();
@@ -15,8 +15,8 @@ app.use(express.json()); // 解析 JSON 请求体
 connectDB();
 
 // 使用路由
-app.use('/api/auth', authRoutes);
-// app.use('/api', searchRoutes);
+app.use('/api/auth', auth);
+app.use('/api', product);
 
 
 // 监听指定的端口
